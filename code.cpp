@@ -35,7 +35,7 @@ void contact :: createAccount()
 	cin.clear();
 
                 ofstream file;
-                file.open("contact.txt",ios::in | ios::out | ios :: trunc);
+                file.open("contact.txt",ios::out | ios :: app);
                 file <<name<<" "<<phone<<" "<<dob<<endl;
                 file.close();
 }
@@ -43,14 +43,15 @@ void contact :: show_all(){
 
    	      ifstream file_read;
          file_read.open("contact.txt",ios::out| ios :: app);
-        file_read>>name>>phone>>dob;
+				 while (file_read>>name>>phone>>dob) {
 
-        cout<<endl<<"Name    :  "<<name;
+  			cout<<endl<<"Name    :  "<<name;
         cout<<endl<<"Phone    :  "<<phone;
         cout<<endl<<"Dob       :  "<<dob<<endl<<endl;
-        file_read.close();
 
 
+}
+  file_read.close();
 }
 
 int main()
@@ -92,4 +93,3 @@ int main()
 
 	return 0;
 }
-
