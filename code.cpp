@@ -1,230 +1,219 @@
-#include<iostream>
-#include<cstring>
-#include<fstream>
+#include <iostream>
+#include <fstream>
+#include  <string.h>
 using namespace std;
-void user_menu(string);
-class user
-{
-	public:
-     string name;
-	string phone;
-	string dob;
 
-
-};
-class contact : public user
+void delete_student()
 {
-public:
-    void createAccount();
-    void show_all();
-     void search_contact( string );
-     void edit_contact();
-     void delete_contact();
-};
-void contact :: createAccount()
-{
-    int flag = 0;
-    ifstream file_read;
-    string c_name;
-    string c_ph;
-	cout << "\n\tEnter  name :";
-	cin>>c_name;
-     file_read.open("contact.txt",ios::out| ios :: app);
-        while (file_read>>name>>phone>>dob) {
-        if(c_name == name){
 
-        cout<<endl<<"contact name is exit !!!" <<endl;
-        cout<<"please enter another name : ";
-         flag = 1;
-          cin>>c_name;
-          cin.clear();
+    fstream stud;
+    fstream temp;
+
+    stud.open("student.txt",ios::in);
+    temp.open("temp.txt",ios::out);
+    char name [25];
+    char age[25];
+    char phone [25];
+    char a[25];
+    cin.ignore();
+    cout<<" \n\t enter the phone number to delete record : ";
+    cin.getline(a,25);
+    while(!stud.eof())
+    {
+        stud.getline(name,25,'|');
+        stud.getline(phone,25,'|');
+        stud.getline(age,25);
+        if(strcmp(phone,a)==0)
+        {
+            continue;
+        }
+        else
+        {
+            temp<< name<<'|'<<phone<<'|'<<age<<'\n';
+        }
+
 
     }
-    if(file_read.eof()){
-            break;
-        }
-}
-    name = c_name;
-    file_read.close();
+    temp.close();
+    stud.close();
 
-    cout << "\n\tEnter phone number :";
-	cin >>c_ph;
-     file_read.open("contact.txt",ios::out| ios :: app);
-        while (file_read>>name>>phone>>dob) {
-        if(c_ph == phone){
-
-        cout<<endl<<"this number already saved  !!!" <<endl;
-         cout<<endl<<"Name   :  "<<name;
-        cout<<endl<<"Phone  :  "<<phone;
-        cout<<endl<<"Dob    :  "<<dob<<endl<<endl;
-        break;
-        //problem;;;;
+    stud.open("student.txt",ios::out);
+    temp.open("temp.txt",ios::in);
+    while(!temp.eof())
+    {
+        temp.getline(name,25,'|');
+        temp.getline(phone,25,'|');
+        temp.getline(age,25);
+        stud<< name<<'|'<<phone<<'|'<<age<<'\n';
     }
-    if(file_read.eof()){
-            break;
+    temp.close();
+    stud.close();
+    remove("temp.txt");
+    cout<<"\n done !!! \n";
+}
+void update_student()
+{
+    fstream stud;
+    fstream temp;
+
+    stud.open("student.txt",ios::in);
+    temp.open("temp.txt",ios::out);
+    char name [25];
+    char age[25];
+    char phone [25];
+    char a[25];
+    cin.ignore();
+    cout<<" \n\t enter the phone number to update record : ";
+    cin.getline(a,25);
+    while(!stud.eof())
+    {
+        stud.getline(name,25,'|');
+        stud.getline(phone,25,'|');
+        stud.getline(age,25);
+        if(strcmp(phone,a)==0)
+        {
+
+            cout<<" \n\tenter new value of record  \n ";
+            cout<<" \n name : ";
+            cin.getline(name,25);
+            cout<<" \n phone : ";
+            cin.getline(phone,25);
+            cout<<" \n age : ";
+            cin.getline(age,25);
+            temp<< name<<'|'<<phone<<'|'<<age<<'\n';
         }
-}
-
-    file_read.close();
-	cout << "\n\tEnter Date f Birth :";
-	cin >>dob;
-	cin.clear();
-
-                ofstream file;
-                file.open("contact.txt",ios::out | ios :: app);
-                file <<name<<" "<<phone<<" "<<dob<<endl;
-                file.close();
-}
-void contact :: show_all(){
-
-   	      ifstream file_read;
-         file_read.open("contact.txt",ios::out| ios :: app);
-				 while (file_read>>name>>phone>>dob) {
-
-        cout<<endl<<"Name   :  "<<name;
-        cout<<endl<<"Phone  :  "<<phone;
-        cout<<endl<<"Dob    :  "<<dob<<endl<<endl;
+        else
+        {
+            temp<< name<<'|'<<phone<<'|'<<age<<'\n';
+        }
 
 
-}
-  file_read.close();
-}
-void contact :: search_contact(string c_name){
-    int ch;
-int flag = 0;
-contact a;
-        ifstream file_read;
-        file_read.open("contact.txt",ios::out| ios :: app);
-        while (file_read>>name>>phone>>dob) {
-        if(c_name == name){
-
-        cout<<endl<<"Name   :  "<<name;
-        cout<<endl<<"Phone  :  "<<phone;
-        cout<<endl<<"Dob    :  "<<dob<<endl<<endl;
-         flag = 1;
-
-	cin.clear();
-
-		cout<<"\n\t 1.Update contact Details.";
-		cout<<"\n\t 2. Delete contact";
-		cout<<"\n\t 0.Exit";
-
-		cout<<"\n\t Enter your Choice (1-2)::";
-	if(cin >> ch)
-	{
-
-
-		switch (ch)
-		{
-			case 1:
-
-				a.edit_contact();
-				//problem;;;
-				break;
-
-			case 2:
-				//a.delete_contact();
-                break;
-             default :
-                 if(ch==0){
-                   break;
-                 }
-                 else{
-				cout<<"\n\t Worng choise \n";
-                 }
-				break;
-		}
-	}
-		else
-		{
-			cout<<"\n\t Input only Digits please !";
-			cin.clear();
-		 	cin.ignore();
-		 	ch=1;
-		}
     }
-        if(file_read.eof()){
+    temp.close();
+    stud.close();
+
+    stud.open("student.txt",ios::out);
+    temp.open("temp.txt",ios::in);
+    while(!temp.eof())
+    {
+        temp.getline(name,25,'|');
+        temp.getline(phone,25,'|');
+        temp.getline(age,25);
+        stud<< name<<'|'<<phone<<'|'<<age<<'\n';
+    }
+    temp.close();
+    stud.close();
+    remove("temp.txt");
+    cout<<"\n done !!! \n";
+}
+void display_all()
+{
+    char name [25];
+    char age[25];
+    char phone [25];
+
+    fstream stud;
+    stud.open("student.txt",ios::in);
+
+    cout<< " \n\t name \t phone \t age \n";
+    while(!stud.eof())
+    {
+        stud.getline(name,25,'|');
+        stud.getline(phone,25,'|');
+        stud.getline(age,25);
+        cout<< "\n \t "<< name << "\t"<<phone<<"\t"<<age<<endl;
+
+    }
+}
+void search_student(   )
+{
+
+    fstream stud;
+    stud.open("student.txt",ios::in);
+    char name [25];
+    char age[25];
+    char phone [25];
+    char a[25];
+    cout<<" \n enter the phone to search about it : ";
+    cin.ignore();
+    cin.getline(a,25);
+    int x=0;
+    cout<< " \n\t name \t phone \t age \n";
+    while(!stud.eof())
+    {
+        stud.getline(name,25,'|');
+        stud.getline(phone,25,'|');
+        stud.getline(age,25);
+        if(strcmp(phone, a)==0)
+        {
+            cout<< "\n \t "<< name << "\t"<<phone<<"\t"<<age<<endl;
+            x=1;
             break;
         }
+
+    }
+    if(x==0)
+    {
+        cout<<" \n not found !!!!\n";
+    }
+    stud.close();
 }
+void  insert_student()
+{
 
-	if(flag !=1 )
-	{
-		cout<<"\n Contact not saved!"<<endl;
-
-	}
-
- file_read.close();
-
-}
-void contact :: edit_contact(){
-      string new_name;
-      string  new_ph;
-      string   new_dob;
-      cout<<"Enter New Name : ";
-      cin>>new_name;
-      cin.clear();
-      cout<<"Enter New Phone Number : ";
-      cin>>new_ph;
-       cin.clear();
-       cout<<"Enter New DoB : ";
-      cin>>new_dob;
-       cin.clear();
-      name = new_name;
-      phone = new_ph;
-      dob = new_dob;
-      ofstream file("contact.txt",ios::out | ios :: app);
-                file <<name<<" "<<phone<<" "<<dob<<endl;
-                file.close();
-    cout<<"\n\tcontact successfully updated !!!\n";
-        cout<<endl<<"Name   :  "<<name;
-        cout<<endl<<"Phone  :  "<<phone;
-        cout<<endl<<"Dob    :  "<<dob<<endl<<endl;
+    char name [25];
+    char age[25];
+    char phone [25];
+    fstream stud;
+    stud.open("student.txt", ios::app);
+    cin.ignore();
+    cout<<" \n name : ";
+    cin.getline(name,25);
+    cout<<" \n phone : ";
+    cin.getline(phone,25);
+    cout<<" \n age : ";
+    cin.getline(age,25);
+    stud<< name<<'|'<<phone<<'|'<<age<<'\n';
+    cout<< "done !";
+    stud.close();
 }
 
 int main()
 {
-	int ch;
-	contact a;
-	string c_name;
+    bool flag=true;
+    while (flag)
+    {
+        cout << " insert : 1 \n search : 2 \n display all : 3 \n update : 4 \n delete :  5 \n write your choose : ";
+        int c;
+        cin>>c;
+        switch (c)
+        {
+        case 1 :
+            insert_student();
+            break;
+        case 2:
+            search_student();
+            break;
+        case 3:
+            display_all();
+            break;
+        case 4 :
+            update_student();
 
-	do{
-	    cout<<"\n\t\t|\tcontact management System\t|\t\t"<<endl;
-        cout <<"\n\t 1. Create a Contact";
-		cout <<"\n\t 2. Show all  contact.";
-		cout <<"\n\t 3. Search a Contact.";
-		cout <<"\n\t 0.Exit";
-
-		cout<<"\n\n\tEnter your choice ::";
-		if(cin >> ch )
-		{
-			switch (ch)
-			{
-				case 1:
-					a.createAccount();
-				      break;
-				case 2:
-					a.show_all();
-					break;
-                case 3:
-                    cout<<"\nEnter Contact Name : ";
-                    cin>>c_name;
-                    a.search_contact(c_name);
-                    break;
-			}
-		}
-		else
-		{
-			cout<<"\n\t Input only Digits please ! Press Enter To continue";
-
-			cin.clear();
-		}
-
-
-
-	}
-	while(ch !=0);
-
-	return 0;
+            break;
+        case 5 :
+            delete_student();
+            break;
+        default :
+            cout << " \n choose right number \n";
+        }
+        cout << " if you continue to use program press ' y ' \n ";
+        char f;
+        cin>>f;
+        if(f!='y')
+        {
+            flag=false;
+        }
+    }
+    return 0;
 }
-
