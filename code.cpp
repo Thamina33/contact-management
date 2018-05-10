@@ -1,17 +1,17 @@
 #include<iostream>
 #include<fstream>
 #include<cstring>
-#include<stdlib.h>
+#include<cstdlib>
 using namespace std;
 
-int  checking_existing(const string &c_name , const string &c_ph){
+int  checking_existing_name(const string &c_name ){
 ifstream read ;
 int b ;
-string name , mail , phone ;
+string name , mail , phone,address,dob ;
 read.open("contact.txt",ios::out| ios::app );
 
-while(read>>name>>phone>>mail){
-  if(name == c_name || phone == c_ph){
+while(read>>name>>phone>>mail>>address>>dob){
+  if(name == c_name){
 b=1 ;
 break ;
 }
@@ -21,6 +21,24 @@ else
 }
 }
 return b ;
+}
+int  checking_existing_phone(const string &c_ph ){
+ifstream read ;
+int c ;
+string name , mail , phone,address,dob ;
+read.open("contact.txt",ios::out| ios::app );
+
+while(read>>name>>phone>>mail>>address>>dob){
+  if(phone == c_ph){
+c=1 ;
+break ;
+}
+else
+{
+  c=0 ;
+}
+}
+return c ;
 }
 
 class user{
@@ -44,43 +62,88 @@ class contact : public user{
 };
 
 void contact :: insert_contact(){
+         label :
             system("cls");
             system("color 57");
+
              cout<<"\n\t\t\t\t**************************************************"<<endl;
              cout<<"\n\t\t\t\t   ********* Contact Management System  *********"<<endl;
              cout<<"\n\t\t\t\t**************************************************"<<endl;
              cout<<"\n\n\t\t\t\t\t\tEnter Contact details \n\t\t\t\t\t____________________________________"<<endl;
-    fstream stud;
-    label:
+           fstream stud;
+
         stud.open("contact.txt", ios::app);
         cin.ignore();
-        cout<<" \n\n\n\t\t Enter name : ";
-        cin.getline(name,25);
-        cout<<" \n\n\t\tEnter phone : ";
-        cin.getline(phone,25);
-        cout<<" \n\n\t\t Enter E-mail : ";
-        cin.getline(mail_add,25);
-        cout<<" \n\n\t\t Enter Home Address : ";
-        cin.getline(h_address,25);
-        cout<<" \n\n\t\t Enter Date of Birth : ";
-        cin.getline(dob,25);
-       string c_name , c_ph ;
-      c_ph=phone;
-      c_name= name ;
-      int a ;
-      a =checking_existing( c_name ,c_ph);
-      if(a==1){
-       cout<<"This Name or Phone Number  is already Taken  "<<endl; ;
-       cout<<"please Press 'Any Key to try Again' "<<endl ;
+        //label :
+        cout<<" \n\n\n\t\tName  :  ";
 
-       goto label ;
+        cin.getline(name,25);
+        if(name[0]>=97 && name[0] <= 122){
+            name[0] = name[0]-32;
+           string c_name ;
+          c_name= name ;
+           int a ;
+      a =checking_existing_name( c_name);
+      if(a==1){
+       cout<<"This Name   is already Taken  "<<endl; ;
+      cout<<"please press  'Enter key' to try Again' "<<endl ;
+
+        goto label;
      }
-           else {
+        }
+        else{
+        string c_name ;
+         c_name= name ;
+      int a ;
+      a =checking_existing_name( c_name);
+      if(a==1){
+         cout<<"This Name   is already Taken  "<<endl; ;
+         cout<<"please press  'Enter key' to try Again' "<<endl ;
+
+
+        goto label;
+     }
+        }
+
+         cout<<"\n\t\tphone number must be 11 digit\n";
+         cout<<" \n\t\tPhone :  ";
+        cin.getline(phone,25);
+        string  c_ph ;
+        c_ph=phone;
+        while(c_ph.length() != 11)
+		{
+			cout<<"\n\t\tPhone number must be 11 digit\n";
+			cout<<"please press  'Enter key' to try Again' "<<endl ;
+
+			goto label;
+		}
+
+         int d;
+         d=checking_existing_phone (c_ph);
+         if(d == 1){
+             cout<<"\n\t\tThis Phone Number  is already Taken  "<<endl; ;
+             cout<<"please press  'Enter key' to try Again' "<<endl ;
+
+             goto label;
+
+
+         }
+        cout<<" \n\n\t\tE-mail  ";
+         cout<<"\n\t\tEnter : ";
+        cin.getline(mail_add,25);
+        cout<<" \n\n\t\tEnter Home Address : ";
+         cout<<"\n\t\tEnter : ";
+        cin.getline(h_address,25);
+        cout<<" \n\n\t\tBirthdate  \n\t\t  *DD/MM/YYYY*  ";
+         cout<<"\n\t\tEnter : ";
+        cin.getline(dob,25);
+
+
     stud<< name<<' '<<phone<<' '<<mail_add<<' '<<h_address<<' '<<dob<<'\n';
-    cout<< "\n\n\t\t\tdone !";
+    cout<< "\n\n\t\t\tDone !";
     cout<<"\n\t\tContact has been saved successfully !!!"<<endl;
     stud.close();
-     }
+
 
 }
 
@@ -92,34 +155,34 @@ void contact :: show_all(){
              cout<<"\n\t\t\t\t#########################################################"<<endl;
          fstream stud;
          stud.open("contact.txt",ios::in);
+          cout<<"\n     Name\t\tPhone\t\tE-mail\t\t\tAddress\t\t\tBirthdate"<<endl;
 
-          int counter =1;
          while(!stud.eof())
     {
+
 
         stud.getline(name,25,' ');
         stud.getline(phone,25,' ');
         stud.getline(mail_add,25,' ');
         stud.getline(h_address,25,' ');
         stud.getline(dob,25);
-        if(stud.eof()){
-        break;
-        }
-        cout<<"\tContact ["<<counter++<<"]"<<endl;
-        cout<< "\n \t\tName\t\t: "<< name << "\n\t\tPhone\t\t: "<<phone<<"\n\t\tE-mail\t\t: "<<mail_add<<"\n\t\tHome Address\t: "<<h_address<<"\n\t\tDate of Birth\t: "<<dob<<"\n"<<endl;
+
+
+        cout<< "\n \n\n     "<< name << "\t\t "<<phone<<"\t\t"<<mail_add<<"\t\t  "<<h_address<<"t\t"<<dob<<"\n"<<endl;
 
 
     }
+
 
 }
 
 void contact :: search_contact(){
                 system("cls");
-            system("color f4");
+               system("color f4");
              cout<<"\n\t\t\t\t#########################################################"<<endl;
              cout<<"\n\t\t\t\t#\t\tContact Management System\t\t#"<<endl;
              cout<<"\n\t\t\t\t#########################################################"<<endl;
-         fstream stud;
+             fstream stud;
     stud.open("contact.txt",ios::in);
 
     char a[25];
@@ -138,7 +201,7 @@ void contact :: search_contact(){
         stud.getline(dob,25);
         if(strcmp(name, a)==0)
         {
-            cout<< "\n \t\tName\t\t: "<< name << "\n\t\tPhone\t\t: "<<phone<<"\n\t\tE-mail\t\t: "<<mail_add<<"\n\t\tHome Address\t: "<<h_address<<"\n\t\tDate of Birth\t: "<<dob<<"\n"<<endl;
+            cout<< "\n\t\tName\t\t: "<< name << "\n\t\tPhone\t\t: "<<phone<<"\n\t\tE-mail\t\t: "<<mail_add<<"\n\t\tHome Address\t: "<<h_address<<"\n\t\tDate of Birth\t: "<<dob<<"\n"<<endl;
 
             x=1;
             break;
@@ -175,39 +238,80 @@ void contact ::update_contact(){
        stud.getline(mail_add,25,' ');
         stud.getline(h_address,25,' ');
         stud.getline(dob,25);
-        if(strcmp(name,a)==0)
-        {
-             fstream file_read;
-             label :
-            file_read.open("contact.txt", ios::app);
+        if(strcmp(name,a)==0){
+        bool flag = true;
+
+        fstream file_read;
+        file_read.open("contact.txt", ios::app);
             cin.ignore();
             cout<<" \n\t\tEnter new value of record  \n ";
-            cout<<" \n\n\t\tName : ";
+             while (flag)
+    {
+        system("cls");
+        system("color 3f");
+               cout<<"\n\t\t\t\t#########################################################"<<endl;
+             cout<<"\n\t\t\t\t#\t\tContact Management System\t\t#"<<endl;
+             cout<<"\n\t\t\t\t#########################################################"<<endl;
 
-            cin.getline(name,25);
-            cout<<" \n\n\tPhone : ";
-            cin.getline(phone,25);
-            cout<<" \n\n\tMail Address : ";
-            cin.getline(mail_add,25);
-            cout<<" \n\n\t\t Home Address : ";
-            cin.getline(h_address,25);
-            cout<<" \n\n\t\t Date of Birth : ";
-            cin.getline(dob,25);
+        cout << "\n\n\t\t\t Update Name\t: [1]\n\t\t\t Update Phone\t: [2] \n\t\t\t Update E-main\t: [3] \n\t\t\t Update Address\t: [4] \n\t\t\t Update Birthdate\t: [5] \n\n\n\t\t\t write your choose\t: ";
+        int c;
+        cin>>c;
+        if(c==1){
+        cout<<" \n\n\n\t\tName  :  ";
+        cin.getline(name,25);
+        if(name[0]>=97 && name[0] <= 122){
+            name[0] = name[0]-32;
+     }
+}
+        else if(c==2){
+        label:
+        cout<<"\n\t\tphone number must be 11 digit\n";
+         cout<<" \n\t\tPhone :  ";
+        cin.getline(phone,25);
+        string  c_ph ;
+        c_ph=phone;
+        while(c_ph.length() != 11)
+		{
+			goto label;
 
-            string c_name , c_ph ;
-          c_ph=phone;
-          c_name= name ;
-          int a ;
-           a =checking_existing( c_name ,c_ph);
-           if(a==1){
-           cout<<"\n\t\tThis Name or Phone Number  is already Taken  "<<endl; ;
-           cout<<"\n\t\tplease Press 'Any Key to try Again' "<<endl ;
 
-         goto label ;
-           }
-            else{
-            temp<<name<<' '<<phone<<' '<<mail_add<<' '<<h_address<<' '<<dob<<'\n';
+		}
+
+         int d;
+         d=checking_existing_phone (c_ph);
+         if(d == 1){
+             cout<<"\n\t\tThis Phone Number  is already Taken  "<<endl; ;
+             goto label ;
+
+
+         }
+    }
+      else if(c ==3){
+        cout<<" \n\n\t\tE-mail  ";
+         cout<<"\n\t\tEnter : ";
+        cin.getline(mail_add,25);
+        }
+        else if(c==4){
+        cout<<" \n\n\t\tEnter Home Address : ";
+         cout<<"\n\t\tEnter : ";
+        cin.getline(h_address,25);
+        }
+         else if(c==5){
+        cout<<" \n\n\t\tBirthdate  \n\t\t  *DD/MM/YYYY*  ";
+         cout<<"\n\t\tEnter : ";
+        cin.getline(dob,25);
+
+        }
+
+
+        else{
+            cout << " \n choose right number \n";
+            break;
             }
+        }
+
+
+
         }
         else
         {
@@ -229,10 +333,15 @@ void contact ::update_contact(){
         temp.getline(h_address,25,' ');
         temp.getline(dob,25);
         stud<<name<<' '<<phone<<' '<<mail_add<<' '<<h_address<<' '<<dob<<'\n';
+        if(temp.eof()){
+                remove("temp.txt");
+            temp.close();
+            break;
+        }
     }
-    temp.close();
+
     stud.close();
-    remove("temp.txt");
+    //remove("temp.txt");
     cout<<"\n done !!! \n";
 }
 
@@ -312,7 +421,7 @@ int main()
     {
         system("cls");
         system("color 3f");
-        cout<<"\a"<<endl;
+
         cout<<"\n\t\t\toooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"<<endl;
         cout<<"\n\t\t\tooooo\t\t\tCONTACT MANAGEMENT SYSTEM\t\toooooo"<<endl;
         cout<<"\n\t\t\toooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"<<endl;
@@ -363,5 +472,6 @@ int main()
     }
     return 0;
 }
+
 
 
